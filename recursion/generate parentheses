@@ -1,0 +1,37 @@
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> result;
+        string current_path = "";
+        
+        // Start the recursive backtracking process
+        backtrack(0, 0, n, current_path, result);
+        
+        return result;
+    }
+
+private:
+    void backtrack(int open_count, int close_count, int max_pairs, 
+                   string& path, vector<string>& result) {
+        
+        // Base Case: If the string reaches the required length (2 * n)
+        if (path.length() == max_pairs * 2) {
+            result.push_back(path);
+            return;
+        }
+
+        // Choice 1: Add an opening parenthesis if we haven't reached 'n'
+        if (open_count < max_pairs) {
+            path.push_back('(');
+            backtrack(open_count + 1, close_count, max_pairs, path, result);
+            path.pop_back(); // Backtrack: undo the choice
+        }
+
+        // Choice 2: Add a closing parenthesis if it matches an unmatched open one
+        if (close_count < open_count) {
+            path.push_back(')');
+            backtrack(open_count, close_count + 1, max_pairs, path, result);
+            path.pop_back(); // Backtrack: undo the choice
+        }
+    }
+};
